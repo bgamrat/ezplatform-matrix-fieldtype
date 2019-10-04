@@ -1,6 +1,17 @@
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
     EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\MatrixFieldDefinitionMapper:
         decorates: EzSystems\EzPlatformGraphQL\Schema\Domain\Content\Mapper\FieldDefinition\FieldDefinitionMapper
         arguments:
             #$contentTypeService: '@ezpublish.siteaccessaware.service.content_type'
             $innerMapper: '@EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\MatrixFieldDefinitionMapper.inner'
+
+    EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\NameHelper: ~
+
+    EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\MatrixFieldDefinitionSchemaWorker:
+        tags:
+            - {name: 'ezplatform_graphql.domain_schema_worker'}
