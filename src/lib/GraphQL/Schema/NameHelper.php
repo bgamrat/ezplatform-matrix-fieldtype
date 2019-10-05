@@ -21,4 +21,14 @@ class NameHelper
             $caseConverter->denormalize($fieldDefinition->identifier)
         );
     }
+
+    public function matrixFieldDefinitionInputType(ContentType $contentType, FieldDefinition $fieldDefinition)
+    {
+        $caseConverter = new CamelCaseToSnakeCaseNameConverter(null, false);
+        return sprintf(
+            '%s%sRowInput',
+            $caseConverter->denormalize($contentType->identifier),
+            $caseConverter->denormalize($fieldDefinition->identifier)
+        );
+    }
 }

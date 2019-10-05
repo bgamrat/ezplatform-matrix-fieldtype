@@ -10,14 +10,16 @@ use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Values\ContentType\ContentType;
 use eZ\Publish\API\Repository\Values\ContentType\FieldDefinition;
 use EzSystems\EzPlatformGraphQL\Schema\Domain\Content\Mapper\FieldDefinition\DecoratingFieldDefinitionMapper;
+use EzSystems\EzPlatformGraphQL\Schema\Domain\Content\Mapper\FieldDefinition\FieldDefinitionInputMapper;
 use EzSystems\EzPlatformGraphQL\Schema\Domain\Content\Mapper\FieldDefinition\FieldDefinitionMapper;
 
-class MatrixFieldDefinitionMapper extends DecoratingFieldDefinitionMapper implements FieldDefinitionMapper
+class MatrixFieldDefinitionMapper extends DecoratingFieldDefinitionMapper implements FieldDefinitionMapper, FieldDefinitionInputMapper
 {
     /**
      * @var \EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\NameHelper
      */
     private $nameHelper;
+
     /**
      * @var \eZ\Publish\API\Repository\ContentTypeService
      */
@@ -41,8 +43,19 @@ class MatrixFieldDefinitionMapper extends DecoratingFieldDefinitionMapper implem
             return parent::mapToFieldValueType($fieldDefinition);
         }
 
-        $contentType = $this->findContentTypeOf($fieldDefinition);
-        return sprintf('[%s]', $this->nameHelper->matrixFieldDefinitionType($contentType, $fieldDefinition));
+        return sprintf(
+            '[%s]',
+            $this->nameHelper->matrixFieldDefinitionType($this->findContentTypeOf($fieldDefinition), $fieldDefinition)
+        );
+    }
+
+    public function mapToFieldValueInputType(ContentType $contentType, FieldDefinition $fieldDefinition): ?string
+    {
+        if (!$this->canMap($fieldDefinition) && is_callable('parent::mapToFieldValueInputType')) {
+            return parent::mapToFieldValueInputType($contentType, $fieldDefinition);
+        }
+
+        return sprintf('[%s]', $this->nameHelper->matrixFieldDefinitionInputType($contentType, $fieldDefinition));
     }
 
     public function mapToFieldValueResolver(FieldDefinition $fieldDefinition): ?string
