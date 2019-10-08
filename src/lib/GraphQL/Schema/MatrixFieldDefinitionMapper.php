@@ -32,6 +32,11 @@ class MatrixFieldDefinitionMapper extends DecoratingFieldDefinitionMapper implem
         $this->contentTypeService = $contentTypeService;
     }
 
+    public function mapToFieldDefinitionType(FieldDefinition $fieldDefinition): ?string
+    {
+        return 'MatrixFieldDefinition';
+    }
+
     protected function getFieldTypeIdentifier(): string
     {
         return 'ezmatrix';
