@@ -14,6 +14,7 @@ MatrixFieldDefinitionSettings:
                 type: "[MatrixFieldDefinitionColumn]"
             minimumRows:
                 type: "Int"
+                resolve: "@=value['minimum_rows']"
 
 MatrixFieldDefinitionColumn:
     type: object
