@@ -8,8 +8,6 @@ services:
         decorates: EzSystems\EzPlatformGraphQL\Schema\Domain\Content\Mapper\FieldDefinition\FieldDefinitionMapper
         arguments:
             $innerMapper: '@EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\MatrixFieldDefinitionMapper.inner'
-        tags:
-            - { name: ezplatform_graphql.field_definition_input_mapper, fieldtype: ezmatrix }
 
     EzSystems\EzPlatformMatrixFieldtype\GraphQL\Schema\NameHelper: ~
 
